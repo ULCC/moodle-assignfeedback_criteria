@@ -1,0 +1,89 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+{{!
+    @template assignfeedback_criteria/criteriasetsave
+
+    Provides a template for the criteria feedback plugin's criteria set save modal.
+
+    Classes required for JS:
+    * none
+
+    Data attributes required for JS:
+    * none
+
+    Context variables required for this template:
+    * canPublish Whether the current user can publish criteria sets.
+
+    Example context (json):
+    {
+        "canPublish": true
+    }
+
+}}
+<div class="assignfeedback_criteria_criteriasetsave">
+    <div class="criteriasetsave-page">
+        <form>
+            <div class="form-group">
+                <label title="{{#str}} criteriasetname_help, assignfeedback_criteria {{/str}}">
+                    {{#str}} criteriasetname, assignfeedback_criteria {{/str}}
+                    <input type="text" name="criteriaset-name" size="32" maxlength="64"
+                            placeholder="{{#str}} criteriasetnameenter, assignfeedback_criteria {{/str}}">
+                    {{> core/loading }}
+                </label>
+            </div>
+            {{#canPublish}}
+                <div class="form-group">
+                    <label title="{{#str}} criteriasetpublish_help, assignfeedback_criteria {{/str}}">
+                        <input type="checkbox" name="criteriaset-publish">
+                        {{#str}} criteriasetpublish, assignfeedback_criteria {{/str}}
+                    </label>
+                </div>
+            {{/canPublish}}
+        </form>
+    </div>
+</div>
+{{#js}}
+    require(['jquery'], function($) {
+        $('.loading-icon').hide();
+
+        // Enable save button only if the name field contains some text.
+        var nameInput = $('[name="criteriaset-name"]'),
+            saveButton = $('[data-action="save"]');
+
+        nameInput.on('keyup blur', function() {
+            if ($(this).val().trim()) {
+                saveButton.prop('disabled', false);
+            } else {
+                saveButton.prop('disabled', true);
+            }
+        });
+
+        // Fix a weird bug when hitting Enter on the name input field.
+        nameInput.on('keydown', function(e) {
+            if (e.keyCode == 13) {
+                e.preventDefault();
+            }
+        });
+
+        // Fix duplicate submission when hitting Enter on the save button.
+        saveButton.on('keydown', function(e) {
+            if (e.keyCode == 13) {
+                e.preventDefault();
+            }
+        });
+    });
+{{/js}}

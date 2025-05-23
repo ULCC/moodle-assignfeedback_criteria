@@ -1,0 +1,35 @@
+.criterion-desc {
+    font-style: italic;
+}
+
+.criteriasets-page .criteriaset-row {
+    padding: 3px 0;
+}
+
+.criteriasets-page .criteriaset-row a[data-toggle="collapse"]::before {
+    content: url([[pix:core|t/expanded]]);
+    vertical-align: text-top;
+    margin-right: 3px;
+}
+
+.criteriasets-page .criteriaset-row a[data-toggle="collapse"].collapsed::before {
+    content: url([[pix:core|t/collapsed]]);
+}
+
+.criteriasets-page .criteriaset-row .criteria-data {
+    clear: left;
+}
+
+.criteriasets-page label,
+.criteriasets-footer label {
+    display: inline;
+    margin-right: 6px;
+}
+
+#page-mod-assign-mod #id_assignfeedback_criteria_critset + .loading-icon {
+    margin-left: 6px;
+    vertical-align: text-bottom;
+}
+.table-bordered th {
+background-color:#f5f5f5;
+}
