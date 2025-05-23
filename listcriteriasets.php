@@ -25,7 +25,10 @@ $content .= '</table>';
 } else {
 $content = '<h5>No Criteria Sets have been added yet</h5><a href="addcriteriaset.php?cmid='.$cmid.'"><button class="button" style="float:right;">Add New Criteria Set</button></a>';
 }
-$PAGE->set_context(get_system_context());
+
+$systemcontext	=	context_system::instance();
+
+$PAGE->set_context($systemcontext);
 $PAGE->set_url($CFG->wwwroot."/mod/assign/feedback/criteria/listcriteriasets.php");
 $PAGE->navbar->ignore_active();
 $PAGE->navbar->add("Criteria Feedback", new moodle_url("/mod/assign/feedback/criteria/listcriteriasets.php?cmid=".$cmid));

@@ -332,7 +332,7 @@ class assign_feedback_criteria extends assign_feedback_plugin {
             $scoretext = !empty($feedbackscores[$key]) ? $feedbackscores[$key]->score : '';
 
             $score = 'assignfeedbackcriteria_score_' . $key;
-            if ($scoretext != $data->{$score}) {
+            if (isset($data->{$score}) && $scoretext != $data->{$score}) {
                 return true;
             }
         }
@@ -826,7 +826,10 @@ $mform->addElement('html','</td><td style="width:6%">');
 $mform->addElement('radio', $editor, '', '', 4);
 $mform->addElement('html','</td><td style="width:6%">');
 $mform->addElement('radio', $editor, '', '', 5);
-$mform->addElement('hidden', 'assignfeedbackcriteria_id_' . $key, $feedbackscores[$key]->id);
+
+$feedbackvalue  =   (!empty($feedbackscores[$key]->id)) ?   $feedbackscores[$key]->id : '';
+
+$mform->addElement('hidden', 'assignfeedbackcriteria_id_' . $key, $feedbackvalue);
 
 //$mform->addGroup($radioarray, 'assignfeedbackcriteria_score_array_'. $key, '', array(' '), false);
 if ($criteriarecord->criteriatype <> 0){

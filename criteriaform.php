@@ -42,8 +42,11 @@ class edit_criteria_form extends moodleform {
 	global $USER, $DB;
         $mform = $this->_form;
 		$mform->addElement('hidden','id');
+        $mform->setType('id', PARAM_INT);
 		$mform->addElement('hidden','cmid');
+        $mform->setType('cmid', PARAM_INT);
 		$mform->addElement('text','name','Name of Criteria Set');
+        $mform->setType('name', PARAM_RAW);
 		$mform->addElement('selectyesno','shared','Shared - If not shared will only be visible to you');
 		$mform->addElement('select','criteriatype','Single or Dual Criteria',array(0 => 'Single (positive only)', 1 => ' Dual (Positive and Negative)'));
 		$mform->addElement('select','scoring', 'Select UG or PG Scoring',array( 0 => 'UG', 1 => 'PG'));

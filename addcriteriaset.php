@@ -2,20 +2,25 @@
 
 require('../../../../config.php');
 require_once('criteriaform.php');
+
+global $DB, $USER,$CFG, $PAGE;
+
 $cmid = required_param('cmid', PARAM_INT);
 
 list ($course, $cm) = get_course_and_cm_from_cmid($cmid, 'assign');
 
 require_login($course, true, $cm);
 
+$id     =   optional_param('id','',PARAM_INT);
+
 $context = context_module::instance($cm->id);
 
 require_capability('mod/assign:view', $context);
-$mform = new edit_criteria_form(null,array('id' => $_GET['id']));
+$mform = new edit_criteria_form(null,array('id' => $id));
 $toform = new stdClass();
 $toform->cmid = $cmid;
-if (isset($_GET['id'])){
-$criteriaset = $DB->get_record('assignfeedback_criteria_cs',array('id' => $_GET['id']));
+if (!empty($id)){
+$criteriaset = $DB->get_record('assignfeedback_criteria_cs',array('id' => $id));
 
 
 if($_GET['action'] <> 'copy'){
@@ -73,10 +78,8 @@ if ($mform->is_cancelled()) {
   }
 
   $criteriaset->criteria = json_encode($criteria);
-  //var_dump($fromform);
-  //var_dump($criteria);
-  //die;
- if ($fromform->id <> ''){
+
+  if (!empty($fromform->id)) {
  $criteriaset->id = $fromform->id;
  $DB->update_record('assignfeedback_criteria_cs',$criteriaset);
 } else {
@@ -86,7 +89,7 @@ $id = $DB->insert_record('assignfeedback_criteria_cs',$criteriaset);
     // can see what they did.
     redirect('listcriteriasets.php?cmid='.$cmid);
 }
-$PAGE->set_context(get_system_context());
+$PAGE->set_context(context_system::instance());
 $PAGE->set_url($CFG->wwwroot."/mod/assign/feedback/criteria/criteriasets.php");
 $PAGE->navbar->ignore_active();
 $PAGE->navbar->add("Criteria Feedback", new moodle_url("/mod/assign/feedback/criteria/listcriteriasets.php?cmid=".$cmid));
