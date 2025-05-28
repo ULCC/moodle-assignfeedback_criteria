@@ -32,7 +32,9 @@ defined('MOODLE_INTERNAL') || die();
  * @return bool
  */
 function xmldb_assignfeedback_criteria_upgrade($oldversion) {
-    global $CFG;
+    global $CFG, $DB;
+
+    $dbman = $DB->get_manager(); // Loads ddl manager and xmldb classes.
 
     // Moodle v2.8.0 release upgrade line.
     // Put any upgrade step following this.
@@ -45,6 +47,23 @@ function xmldb_assignfeedback_criteria_upgrade($oldversion) {
 
     // Moodle v3.1.0 release upgrade line.
     // Put any upgrade step following this.
+
+    if ($oldversion < 2018092802) {
+        // change the data format of csid column
+        // Define table.
+        $table = new xmldb_table('assignfeedback_criteria');
+
+        // Define the column to change.
+        $field = new xmldb_field('csid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '0');
+
+        // Only change it if the field exists.
+        if ($dbman->field_exists($table, $field)) {
+            $dbman->change_field_precision($table, $field);
+        }
+
+        upgrade_plugin_savepoint(true, 2018092802, 'assignfeedback', 'criteria');
+    }
+
 
     return true;
 }
